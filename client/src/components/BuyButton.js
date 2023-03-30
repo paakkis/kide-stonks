@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/lab/LoadingButton';
 import { Box } from '@mui/material/';
-import SendIcon from '@mui/icons-material/Send';
 import fetch from '../services/fetch';
 import { useState, useRef, useEffect } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -18,7 +17,7 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
       return;
     }
     else if (loop) {
-      tick.current = setInterval(buyAllTickets, 1000);
+      tick.current = setInterval(buyAllTickets, 500);
     } else {
       clearInterval(tick.current);
     }
@@ -36,7 +35,7 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
     else {
       try {
         event.variants.map(event => (
-          fetch.fetchTicket(event.inventoryId, token)
+          fetch.fetchTicket(event.inventoryId, token, event.productVariantMaximumReservableQuantity)
                 .then((response) => {
                     setOpenMessageNotification(true)
                     setMessage(`Napattiin '${event.name}' lippu.`)

@@ -49,17 +49,17 @@ const EventInfo = ({ event }) => {
           <Typography gutterBottom variant="h5">
               Lipputyypit
           </Typography>
-          {event.variants.length > 0 ?
+          {event.product.timeUntilSalesStart === 0 ?
               event.variants.map(event => (
-                  <Card sx={{ maxWidth: 380, maxHeight: 100, margin: 'auto', marginTop: '10px', textAlign: 'left'}}>
+                  <Card sx={{ maxWidth: 380, maxHeight: 100, margin: 'auto', marginTop: '10px', textAlign: 'left'}} >
                       <Typography gutterBottom variant="h7" component="div" sx={{textAlign: 'left', whiteSpace: "normal", margin: '7px 7px 7px 7px', fontWeight: 500}}>
                           {event.name}
                       </Typography>
                       <Box sx={{textAlign: 'left', whiteSpace: "normal", margin: '7px 7px 7px 7px'}}>
                         {event.availability !== 0 ?
-                          <Chip sx={{margin: '0px 7px 0px 0px'}} label={`${event.availability} kpl`} color="success" variant="outlined" size='small'/>
+                          <Chip sx={{margin: '0px 7px 0px 0px'}} label={`${event.availability} %`} color="success" variant="outlined" size='small'/>
                           :
-                          <Chip sx={{margin: '0px 7px 0px 0px'}} label={`${event.availability} kpl`} color="error" variant="outlined" size='small'/>
+                          <Chip sx={{margin: '0px 7px 0px 0px'}} label={`${event.availability} %`} color="error" variant="outlined" size='small'/>
                         }
                           
                           <Chip label={`${(event.pricePerItem) / 100} €`} color="default" variant="outlined" size='small' />

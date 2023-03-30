@@ -19,9 +19,9 @@ const fetchEvent = async (id) => {
     return response.data
 }
 
-const fetchTicket = async (id, kideToken) => {
+const fetchTicket = async (id, kideToken, productVariantMaximumReservableQuantity) => {
 
-  var data = {"toCreate":[{"inventoryId":id,"quantity":1,"productVariantUserForm":null}]}
+  var data = {"toCreate":[{"inventoryId":id,"quantity":productVariantMaximumReservableQuantity,"productVariantUserForm":null}]}
 
   var options = {
   method: 'POST',
