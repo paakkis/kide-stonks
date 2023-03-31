@@ -5,7 +5,7 @@ import fetch from '../services/fetch';
 import { useState, useRef, useEffect } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 
-const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification }) => {
+const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification, setEventInfo }) => {
 
   const [loop, setLoop] = useState(false)
   const firstStart = useRef(true);
@@ -29,55 +29,58 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
       setOpenErrorNotification(true)
       setError(`Token puuttuu.`)
       setTimeout(() => {
-        setError([])
+        setError('')
       }, 6000)
     }
     else {
       try {
-        event.variants.map(event => (
-          fetch.fetchTicket(event.inventoryId, token, event.productVariantMaximumReservableQuantity)
-                .then((response) => {
-                    setOpenMessageNotification(true)
-                    setMessage(`Napattiin '${event.name}' lippu.`)
-                    setTimeout(() => {
-                      setMessage('')
-                      setOpenMessageNotification(false)
-                    }, 6000)
-                  })
-                .catch(error => {
-                    if (error.response.status === 401){
-                      setOpenErrorNotification(true)
-                      setError(`Token väärin tai puutteellinen. Anna token ilman Bearer-liitettä.`)
-                      setTimeout(() => {
-                        setError([])
-                      }, 6000)
-                    }
-                    if (error.response.status === 400){
-                      setOpenErrorNotification(true)
-                      setError(`Lippua '${event.name}' ei saatavilla.`)
-                      setTimeout(() => {
-                        setError('')
-                        setOpenErrorNotification(false)
-                      }, 6000)
-                      }
-                    })
-                  ))
-              if (event.variants.length === 0){
-                  setOpenErrorNotification(true)
-                  setError(`Myynti ei vielä alkanut.`)
-                  setTimeout(() => {
-                    setError([])
-                  }, 6000)
+        fetch.fetchEvent(event.product.id).then(event => {
+          setEventInfo(event.model)
+        }) 
+        if (event.variants.length === 0){
+          setOpenErrorNotification(true)
+          setError(`Myynti ei ole vielä alkanut.`)
+          setTimeout(() => {
+            setError('')
+          }, 6000)
+        }
+      event.variants.map(event => (
+      fetch.fetchTicket(event.inventoryId, token, event.productVariantMaximumReservableQuantity)
+        .then((response) => {
+            setOpenMessageNotification(true)
+            setMessage(`Napattiin '${event.name}' lippu.`)
+            setTimeout(() => {
+              setMessage('')
+              setOpenMessageNotification(false)
+            }, 6000)
+        })
+        .catch(error => {
+              if (error.response.status === 401){
+                setOpenErrorNotification(true)
+                setError(`Token väärin tai puutteellinen. Anna token ilman Bearer-liitettä.`)
+                setTimeout(() => {
+                  setError('')
+                }, 6000)
               }
-      } catch(error){
-        setOpenErrorNotification(true)
-        setError(`Odottamaton virhe. Mitä vittua.`)
-        setTimeout(() => {
-          setError([])
-        }, 6000)
+              if (error.response.status === 400){
+                setOpenErrorNotification(true)
+                setError(`Lippua '${event.name}' ei saatavilla.`)
+                setTimeout(() => {
+                  setError('')
+                  setOpenErrorNotification(false)
+                }, 6000)
+                }
+            })
+          ))
+        } catch(error){
+          setOpenErrorNotification(true)
+          setError(`Odottamaton virhe. ${error}`)
+          setTimeout(() => {
+            setError('')
+          }, 6000)
+        }
       }
     }
-  }
 
   const toggleStartBuy = () => {
     setLoop(!loop);
@@ -109,21 +112,25 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
         <Button
           onClick={() => handleClick()}
           variant="contained"
-          sx={{color: "white", backgroundColor: '#2a0062'}}
+          size='medium'
+          sx={{color: "white", backgroundColor: '#2a0062', minWidth: '6rem', minHeight: '3rem', ':hover': {
+            background: '#2a0050'
+          }}}
         >
-          OSTA 1x
+          OSTA
         </Button>
         <ToggleButton
           value="check"
-          size='small'
+          size='medium'
           selected={loop}
           color='standard'
           onClick={toggleStartBuy} 
           onChange={() => {
             setLoop(!loop);
           }}
+          sx={{minWidth: '6rem', minHeight: '2rem', color: 'white', border: '1x solid #2a0062', boxSizing: 'border-box'}}
         >
-        {loop ? 'Lopeta' : 'Looppaa'}
+        {loop ? 'LOPETA' : 'LOOP'}
         </ToggleButton>
       </Box>
     </Box>

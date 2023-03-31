@@ -26,7 +26,25 @@ const Copyright = (props) => {
   );
 }
 
-const theme = createTheme();
+const theme = createTheme({
+  typography: {
+    allVariants: {
+      fontFamily: 'Roboto Mono',
+      textTransform: 'none',
+      fontSize: 16,
+      
+    },
+    h5: {
+      color: 'white'
+    },
+  },
+  root: {
+    "&. MuiFormLabel-root": {
+      color: "white",
+      background: '#212121'
+    }
+  }
+});
 
 const LoginForm = ({ setMessage, setError, setUser, setOpenMessageNotification, setOpenErrorNotification }) =>  {
   const [username, setUsername] = useState('')
@@ -62,7 +80,7 @@ const LoginForm = ({ setMessage, setError, setUser, setOpenMessageNotification, 
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', margin: 'auto !important', alignItems: 'center'}}>
         <CssBaseline />
         <Box
           sx={{
@@ -70,11 +88,9 @@ const LoginForm = ({ setMessage, setError, setUser, setOpenMessageNotification, 
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>

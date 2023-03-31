@@ -34,21 +34,31 @@ const EventMenu = ({ event, setEvent, setEventInfo, events }) => {
             id="outlined-select-currency"
             select
             label="Tapahtuma"
+            color='secondary'
             value={event}
             onChange={handleChange}
             sx={
               {                         
                 '& .MuiOutlinedInput-root': {  
-                    '& fieldset': {           
-                        borderColor: '#2a0062',   
-                    },
-                    '&:hover fieldset': {
-                        borderColor: '#2a0062',
-                    },
-                    '&.Mui-focused fieldset': { 
-                        borderColor: '#2a0062',
-                    },
-                },
+                  '& fieldset': {           
+                      borderColor: '#2a0062',
+                      border: '2px solid #2a0062'   
+                  },
+                  '&:hover fieldset': {
+                      borderColor: '#2a0062',
+                      border: '3px solid #2a0062' 
+                  },
+                  '&.Mui-focused fieldset': { 
+                      borderColor: '#2a0062',
+                      border: '3px solid #2a0062' 
+                  },
+                  '&.MuiInputLabel-root': {
+                    color: 'white'
+                  },
+                  "&.MuiFormLabel-root": {
+                    color: 'white'
+                  } 
+              },
               } 
             }
           >
@@ -61,12 +71,12 @@ const EventMenu = ({ event, setEvent, setEventInfo, events }) => {
                         value={event.name} 
                         onClick={() => getEventInfo(event.id)}
                         sx={{
-                            width: 350,
+                            width: 500,
                             whiteSpace: "normal",
                             }}
                         >
                 {event.name}
-                <Box sx={{margin: "0px 0px 0px auto"}}>
+                <Box sx={{margin: "0px 0px 0px auto", pl: 2}}>
                   {event.availability !== 0 ?
                     <Chip label={`${event.availability} kpl`} color="success" variant="outlined" />
                     :

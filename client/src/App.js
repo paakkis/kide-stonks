@@ -10,6 +10,7 @@ import Card from '@mui/material/Card';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
 import EventInfo from './components/EventInfo';
+import { ThemeProvider, createTheme } from '@mui/material';
 
 const App = () => {
 
@@ -31,6 +32,7 @@ const App = () => {
       setUser(user)
       fetch.setToken(user.token)
     }
+    setToken(localStorage.getItem('kideToken'))
   }, [])
 
   if (user === null){
@@ -45,48 +47,69 @@ const App = () => {
     )
   }
 
+  const theme = createTheme({
+    typography: {
+      allVariants: {
+        fontFamily: 'Roboto Mono',
+        textTransform: 'none',
+        fontSize: 16,
+        
+      },
+      h5: {
+        color: 'white'
+      },
+    },
+    root: {
+      "&. MuiFormLabel-root": {
+        color: "white"
+      }
+    }
+  });
 
   return (
-    <div className="App">
-      <Notification message={message} 
-                    error={error} 
-                    openErrorNotification={openErrorNotification} 
-                    setOpenErrorNotification={setOpenErrorNotification} 
-                    openMessageNotification={openMessageNotification} 
-                    setOpenMessageNotification={setOpenMessageNotification} 
-      />
-      <Navbar setMessage={setMessage} 
-              setError={setError} 
-              setUser={setUser}
-              setOpenMessageNotification={setOpenMessageNotification} 
-              setOpenErrorNotification={setOpenErrorNotification}
-              user={user}
-      />
-      <Card sx={{ width: 400, minHeight: 500, margin: 'auto', outline: 'solid 2px rgb(202,191,216,0.3)'}}>
-            <CityMenu setCity={setCity} 
-                      city={city} 
-                      setEvents={setEvents}
-            />
-            <EventMenu setEvent={setEvent} 
-                       events={events} 
-                       event={event} 
-                       setEventInfo={setEventInfo}
-            />
-            <TokenInput setToken={setToken}/>
-            <BuyButton event={eventInfo} 
-                       setMessage={setMessage} 
-                       setError={setError} 
-                       setOpenMessageNotification={setOpenMessageNotification} 
-                       setOpenErrorNotification={setOpenErrorNotification}
-                       token={token}
-            />
-      </Card>
-      {eventInfo  === null ? 
-          <></>
-          :
-          <EventInfo event={eventInfo}/>
-      }
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Notification message={message} 
+                      error={error} 
+                      openErrorNotification={openErrorNotification} 
+                      setOpenErrorNotification={setOpenErrorNotification} 
+                      openMessageNotification={openMessageNotification} 
+                      setOpenMessageNotification={setOpenMessageNotification} 
+        />
+        <Navbar setMessage={setMessage} 
+                setError={setError} 
+                setUser={setUser}
+                setOpenMessageNotification={setOpenMessageNotification} 
+                setOpenErrorNotification={setOpenErrorNotification}
+                user={user}
+        />
+        <Card sx={{ width: 400, minHeight: 400, margin: 'auto', boxShadow: 'rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px', background: '#262828', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+              <CityMenu setCity={setCity} 
+                        city={city} 
+                        setEvents={setEvents}
+              />
+              <EventMenu setEvent={setEvent} 
+                        events={events} 
+                        event={event} 
+                        setEventInfo={setEventInfo}
+              />
+              <TokenInput setToken={setToken}/>
+              <BuyButton event={eventInfo} 
+                        setMessage={setMessage} 
+                        setError={setError} 
+                        setOpenMessageNotification={setOpenMessageNotification} 
+                        setOpenErrorNotification={setOpenErrorNotification}
+                        token={token}
+                        setEventInfo={setEventInfo}
+              />
+        </Card>
+        {eventInfo  === null ? 
+            <></>
+            :
+            <EventInfo event={eventInfo}/>
+        }
+      </div>
+    </ThemeProvider>
   );
 }
 

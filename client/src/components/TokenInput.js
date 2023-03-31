@@ -5,14 +5,14 @@ import TextField from '@mui/material/TextField';
 const TokenInput = ({ setToken }) => {
   const handleChange = (event) => {
     setToken(event.target.value);
+    window.localStorage.setItem('kideToken', event.target.value);
   };
 
   return (
     <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { width: '25ch', margin: "10px 0px 10px auto" },
-                                 
+        '& .MuiTextField-root': { width: '25ch', color: 'white' },     
           '& .MuiOutlinedInput-root': {  
               '& fieldset': {           
                   borderColor: '#2a0062',   
@@ -31,21 +31,36 @@ const TokenInput = ({ setToken }) => {
     >
       <div>
         <TextField
+          value={localStorage.getItem('kideToken')}
           id="outlined-helperText"
           placeholder='Syötä'
-          label="Bearer token"
-          sx={              {                         
+          label="Token"
+          color='secondary'
+          sx={{                         
             '& .MuiOutlinedInput-root': {  
-                '& label': {           
-                    color: '#2a0062',   
-                },
-                '&:hover fieldset': {
-                    borderColor: '#2a0062',
-                },
-                '&.Mui-focused fieldset': { 
-                    borderColor: '#2a0062',
-                },
-            },
+              '& fieldset': {           
+                  borderColor: '#2a0062',
+                  border: '2px solid #2a0062'   
+              },
+              '&:hover fieldset': {
+                  borderColor: '#2a0062',
+                  border: '3px solid #2a0062' 
+              },
+              '&.Mui-focused fieldset': { 
+                  borderColor: '#2a0062',
+                  border: '3px solid #2a0062' 
+              },
+              '&.MuiFormLabel-root-MuiInputLabel-root':{
+                color: 'white'
+              },
+              "&.Mui-focused": {
+                color: "white"
+              },
+              "&.Mui-root": {
+                color: 'white'
+              } 
+
+          }
           } }
           onChange={handleChange}
         />

@@ -20,18 +20,19 @@ const Navbar = ({setUser, setMessage, setError, user, setOpenMessageNotification
       }
       return (
         <AppBar elevation={0} sx={{backgroundColor:'white'}}>
-            <Toolbar >
+            <Toolbar sx={{background: '#212121'}}>
                 <Typography  
                     variant="h5"
                     noWrap
                     component="div"
-                    sx={{ flexGrow: 1, color: '#2a0062' }}
+                    sx={{ flexGrow: 1, color: 'white' }}
                 >
                     KideStonks
                 </Typography>
                 {user === null ? 
                     null :
-                    <Button sx={{position: 'absolute', backgroundColor: 'white', color: '#2a0062', ":hover": {backgroundColor: '#2a0062', color: 'white'}}} size="small" onClick={() => handleLogout()}>log out</Button>
+                    <Button sx={{position: 'absolute', color: 'white', fontWeight: 700, ":hover": {backgroundColor: '#2a0062', color: 'white'}}} size="small" onClick={() => handleLogout()} variant=
+                    'text'>LOGOUT</Button>
                 }
             </Toolbar>
             
