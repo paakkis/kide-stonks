@@ -6,7 +6,7 @@ import fetch from '../services/fetch';
 
 const CityMenu = ({ city, setCity, events, setEvents }) => {
 
-  const cities = ['Joensuu', 'Kuopio']
+  const cities = ['Joensuu', 'Kuopio', 'Tampere', 'Helsinki']
 
   const handleChange = (event) => {
     setCity(event.target.value);

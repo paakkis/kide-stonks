@@ -33,19 +33,6 @@ const App = () => {
     }
   }, [])
 
-  if (user === null){
-    return (
-      <LoginForm 
-        setMessage={setMessage} 
-        setError={setError} 
-        setOpenMessageNotification={setOpenMessageNotification} 
-        setOpenErrorNotification={setOpenErrorNotification}
-        setUser={setUser}
-      />
-    )
-  }
-
-
   return (
     <div className="App">
       <Notification message={message} 
@@ -79,6 +66,7 @@ const App = () => {
                        setOpenMessageNotification={setOpenMessageNotification} 
                        setOpenErrorNotification={setOpenErrorNotification}
                        token={token}
+                       setEventInfo={setEventInfo}
             />
       </Card>
       {eventInfo  === null ? 

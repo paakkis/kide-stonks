@@ -6,7 +6,7 @@ import fetch from '../services/fetch';
 import { useState, useRef, useEffect } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 
-const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification }) => {
+const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification, setEventInfo }) => {
 
   const [loop, setLoop] = useState(false)
   const firstStart = useRef(true);
@@ -35,6 +35,9 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
     }
     else {
       try {
+        fetch.fetchEvent(event.product.id).then(event => {
+          setEventInfo(event.model)
+        }) 
         event.variants.map(event => (
           fetch.fetchTicket(event.inventoryId, token)
                 .then((response) => {
@@ -63,20 +66,13 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
                       }
                     })
                   ))
-              if (event.variants.length === 0){
-                  setOpenErrorNotification(true)
-                  setError(`Myynti ei vielä alkanut.`)
-                  setTimeout(() => {
-                    setError([])
-                  }, 6000)
-              }
-      } catch(error){
-        setOpenErrorNotification(true)
-        setError(`Odottamaton virhe. Mitä vittua.`)
-        setTimeout(() => {
-          setError([])
-        }, 6000)
-      }
+        } catch(error){
+          setOpenErrorNotification(true)
+          setError(`Odottamaton virhe. Mitä vittua.`)
+          setTimeout(() => {
+            setError([])
+          }, 6000)
+        }
     }
   }
 
