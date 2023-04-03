@@ -32,18 +32,17 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
         setError('')
       }, 6000)
     }
-    else {
-      try {
+    try {
+      if (event.variants.length === 0){
         fetch.fetchEvent(event.product.id).then(event => {
           setEventInfo(event.model)
         }) 
-        if (event.variants.length === 0){
-          setOpenErrorNotification(true)
-          setError(`Myynti ei ole vielä alkanut.`)
-          setTimeout(() => {
-            setError('')
-          }, 6000)
-        }
+        setOpenErrorNotification(true)
+        setError(`Myynti ei ole vielä alkanut.`)
+        setTimeout(() => {
+          setError('')
+        }, 6000)
+      }
       event.variants.map(event => (
       fetch.fetchTicket(event.inventoryId, token, event.productVariantMaximumReservableQuantity)
         .then((response) => {
@@ -79,7 +78,6 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
             setError('')
           }, 6000)
         }
-      }
     }
 
   const toggleStartBuy = () => {
