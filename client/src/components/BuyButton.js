@@ -6,7 +6,6 @@ import { useState, useRef, useEffect } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 
 const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification, setEventInfo }) => {
-const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification, setEventInfo }) => {
 
   const [loop, setLoop] = useState(false)
   const firstStart = useRef(true);
