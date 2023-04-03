@@ -7,22 +7,19 @@ import ToggleButton from '@mui/material/ToggleButton';
 
 const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification, setEventInfo }) => {
 
-  const [loop, setLoop] = useState(false)
+  const [isLoopActive, setIsLoopActive] = useState(false);
   const firstStart = useRef(true);
   const tick = useRef();
 
   useEffect(() => {
-    if (firstStart.current) {
-      firstStart.current = !firstStart.current;
-      return;
+    let intervalId;
+    if (isLoopActive) {
+      intervalId = setInterval(() => {
+        buyAllTickets();
+      }, 1000);
     }
-    else if (loop) {
-      tick.current = setInterval(buyAllTickets, 500);
-    } else {
-      clearInterval(tick.current);
-    }
-    return () => clearInterval(tick.current);
-  }, [loop]);
+    return () => clearInterval(intervalId);
+  }, [isLoopActive]);
 
   const buyAllTickets = () => {
     if (!token){
@@ -80,25 +77,10 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
         }
     }
 
-  const toggleStartBuy = () => {
-    setLoop(!loop);
-    if (loop){
-      setOpenMessageNotification(true)
-      setMessage(`Lopetetaan looppaus...`)
-      setTimeout(() => {
-        setMessage('')
-        setOpenMessageNotification(false)
-      }, 6000)
-    }
-    if (!loop){
-        setOpenMessageNotification(true)
-        setMessage(`Yritetään ostaa lippua joka 1s välein...`)
-        setTimeout(() => {
-          setMessage('')
-          setOpenMessageNotification(false)
-        }, 6000)
-      }
-  };
+
+  const handleLoopClick = () => {
+    setIsLoopActive(!isLoopActive);
+  }
 
   const handleClick = () => {
       buyAllTickets()
@@ -120,15 +102,13 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
         <ToggleButton
           value="check"
           size='medium'
-          selected={loop}
+          
           color='standard'
-          onClick={toggleStartBuy} 
-          onChange={() => {
-            setLoop(!loop);
-          }}
+          onClick={handleLoopClick} 
+
           sx={{minWidth: '6rem', minHeight: '2rem', color: 'white', border: '1x solid #2a0062', boxSizing: 'border-box'}}
         >
-        {loop ? 'LOPETA' : 'LOOP'}
+        {isLoopActive ? 'LOPETA' : 'LOOP'}
         </ToggleButton>
       </Box>
     </Box>
