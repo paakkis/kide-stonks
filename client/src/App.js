@@ -12,6 +12,7 @@ import Notification from './components/Notification';
 import EventInfo from './components/EventInfo';
 import { ThemeProvider, createTheme } from '@mui/material';
 
+
 const App = () => {
 
   const [city, setCity] = useState('')
@@ -24,16 +25,25 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [openErrorNotification, setOpenErrorNotification] = useState(false)
   const [openMessageNotification, setOpenMessageNotification] = useState(false)
+  const [extraId, setExtraId] = useState('');
 
+  
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedStonkuser')
+    const loggedUserJSON = window.localStorage.getItem('loggedStonkuser');
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      fetch.setToken(user.token)
+      const user = JSON.parse(loggedUserJSON);
+      setUser(user);
+      fetch.setToken(user.token);
     }
-    setToken(localStorage.getItem('kideToken'))
-  }, [])
+    setToken(localStorage.getItem('kideToken'));
+
+    const initializeExtraId = async () => {
+      const fetchedExtraId = await fetch.fetchExtraId();
+      setExtraId(fetchedExtraId);
+    };
+    initializeExtraId();
+  }, []);
+
 
   if (user === null){
     return (
@@ -101,6 +111,7 @@ const App = () => {
                         setOpenErrorNotification={setOpenErrorNotification}
                         token={token}
                         setEventInfo={setEventInfo}
+                        extraId={extraId}
               />
         </Card>
         {eventInfo  === null ? 

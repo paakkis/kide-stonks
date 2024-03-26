@@ -5,7 +5,7 @@ import fetch from '../services/fetch';
 import { useState, useRef, useEffect } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 
-const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification, setEventInfo }) => {
+const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification, setEventInfo, extraId }) => {
 
   const [isLoopActive, setIsLoopActive] = useState(false);
   const firstStart = useRef(true);
@@ -41,7 +41,7 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
         }, 6000)
       }
       event.variants.map(event => (
-      fetch.fetchTicket(event.inventoryId, token, event.productVariantMaximumReservableQuantity)
+      fetch.fetchTicket(event.inventoryId, token, event.productVariantMaximumReservableQuantity, extraId)
         .then((response) => {
             setOpenMessageNotification(true)
             setMessage(`Napattiin '${event.name}' lippu.`)
