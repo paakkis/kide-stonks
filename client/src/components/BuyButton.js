@@ -8,8 +8,6 @@ import ToggleButton from '@mui/material/ToggleButton';
 const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotification, setOpenMessageNotification, setEventInfo, extraId }) => {
 
   const [isLoopActive, setIsLoopActive] = useState(false);
-  const firstStart = useRef(true);
-  const tick = useRef();
 
   useEffect(() => {
     let intervalId;
@@ -22,12 +20,14 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
   }, [isLoopActive]);
 
   const buyAllTickets = () => {
+
     if (!token){
       setOpenErrorNotification(true)
       setError(`Token puuttuu.`)
       setTimeout(() => {
         setError('')
       }, 6000)
+      return;
     }
     try {
       if (event.variants.length === 0){
@@ -39,34 +39,36 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
         setTimeout(() => {
           setError('')
         }, 6000)
+        return;
       }
-      event.variants.map(event => (
-      fetch.fetchTicket(event.inventoryId, token, event.productVariantMaximumReservableQuantity, extraId)
-        .then((response) => {
-            setOpenMessageNotification(true)
-            setMessage(`Napattiin '${event.name}' lippu.`)
-            setTimeout(() => {
-              setMessage('')
-              setOpenMessageNotification(false)
-            }, 6000)
-        })
-        .catch(error => {
-              if (error.response.status === 401){
-                setOpenErrorNotification(true)
-                setError(`Token väärin tai puutteellinen. Anna token ilman Bearer-liitettä.`)
-                setTimeout(() => {
-                  setError('')
-                }, 6000)
-              }
-              if (error.response.status === 400){
-                setOpenErrorNotification(true)
-                setError(`Lippua '${event.name}' ei saatavilla.`)
-                setTimeout(() => {
-                  setError('')
-                  setOpenErrorNotification(false)
-                }, 6000)
+      event.variants.map(variant => (
+        
+        fetch.fetchTicket(variant.inventoryId, token, variant.productVariantMaximumReservableQuantity, extraId)
+          .then((response) => {
+              setOpenMessageNotification(true)
+              setMessage(`Napattiin '${variant.name}' -lippu.`)
+              setTimeout(() => {
+                setMessage('')
+                setOpenMessageNotification(false)
+              }, 6000)
+          })
+          .catch(error => {
+                if (error.response.status === 401){
+                  setOpenErrorNotification(true)
+                  setError(`Token väärin tai puutteellinen. Annathan tokenin ilman Bearer -liitettä.`)
+                  setTimeout(() => {
+                    setError('')
+                  }, 6000)
                 }
-            })
+                if (error.response.status === 400){
+                  setOpenErrorNotification(true)
+                  setError(`Lippua '${variant.name}' ei saatavilla.`)
+                  setTimeout(() => {
+                    setError('')
+                    setOpenErrorNotification(false)
+                  }, 6000)
+                  }
+              })
           ))
         } catch(error){
           setOpenErrorNotification(true)
@@ -88,7 +90,7 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
 
   return (
     <Box>
-      <Box sx={{ '& > button': { m: 3 } }}>
+      <Box sx={{ '& > button': { mt: 3, mx: 3 } }}>
         <Button
           onClick={() => handleClick()}
           variant="contained"
@@ -97,7 +99,7 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
             background: '#2a0050'
           }}}
         >
-          OSTA
+          VARAA
         </Button>
         <ToggleButton
           value="check"
@@ -106,9 +108,12 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
           color='standard'
           onClick={handleLoopClick} 
 
-          sx={{minWidth: '6rem', minHeight: '2rem', color: 'white', border: '1x solid #2a0062', boxSizing: 'border-box'}}
+          sx={{minWidth: '6rem', minHeight: '2rem', color: 'white', border: '1x solid #2a0062', boxSizing: 'border-box',                      
+
+          }}
+        
         >
-        {isLoopActive ? 'LOPETA' : 'LOOP'}
+        {isLoopActive ? 'STOP' : 'LOOP'}
         </ToggleButton>
       </Box>
     </Box>

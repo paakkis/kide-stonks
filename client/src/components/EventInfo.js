@@ -59,7 +59,7 @@ const EventInfo = ({ event }) => {
             <Divider sx={{border: '2px solid #2a0062', width: '100%', alignSelf: 'center'}}/>
             {event.product.timeUntilSalesStart === 0 ?
                 event.variants.map(event => (
-                    <Card sx={{ width: '100%', maxHeight: 100, margin: 'auto', marginTop: '10px', textAlign: 'left', background: '#262828', padding: 1}} >
+                    <Card key={event.id} sx={{ width: '100%', maxHeight: 100, margin: 'auto', marginTop: '10px', textAlign: 'left', background: '#262828', padding: 1}} >
                         <Typography gutterBottom variant="h7" component="div" sx={{textAlign: 'left', whiteSpace: "normal", margin: '7px 7px 7px 7px', fontWeight: 500, color: 'white'}}>
                             {event.name}
                         </Typography>

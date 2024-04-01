@@ -40,6 +40,7 @@ const EventMenu = ({ event, setEvent, setEventInfo, events }) => {
             sx={
               {                         
                 '& .MuiOutlinedInput-root': {  
+                  color: "darkgray",
                   '& fieldset': {           
                       borderColor: '#2a0062',
                       border: '2px solid #2a0062'   
@@ -66,7 +67,7 @@ const EventMenu = ({ event, setEvent, setEventInfo, events }) => {
               .sort((a, b) => b.timeUntilSalesStart - a.timeUntilSalesStart)
               .filter(event => event.productType === 1)
               .map((event) => (
-              <MenuItem key={event.name} 
+              <MenuItem key={event.id} 
               
                         value={event.name} 
                         onClick={() => getEventInfo(event.id)}
@@ -78,9 +79,9 @@ const EventMenu = ({ event, setEvent, setEventInfo, events }) => {
                 {event.name}
                 <Box sx={{margin: "0px 0px 0px auto", pl: 2}}>
                   {event.availability !== 0 ?
-                    <Chip label={`${event.availability} kpl`} color="success" variant="outlined" />
+                    <Chip label={`${event.availability} %`} color="success" variant="outlined" />
                     :
-                    <Chip label={`${event.availability} kpl`} color="error" variant="outlined" />
+                    <Chip label={`${event.availability} %`} color="error" variant="outlined" />
                   }
                   
                 </Box>

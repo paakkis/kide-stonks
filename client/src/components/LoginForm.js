@@ -59,7 +59,6 @@ const LoginForm = ({ setMessage, setError, setUser, setOpenMessageNotification, 
       window.localStorage.setItem('loggedStonkuser', JSON.stringify(user))
       fetch.setToken(user.token)
       setUser(user)
-      console.log(user)
       setUsername('')
       setPassword('')
       setOpenMessageNotification(true)

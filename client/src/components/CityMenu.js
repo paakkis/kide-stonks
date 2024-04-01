@@ -37,6 +37,7 @@ const CityMenu = ({ city, setCity, events, setEvents }) => {
           sx={
               {                        
                 '& .MuiOutlinedInput-root': {  
+                    color: "darkgray",
                     '& fieldset': {           
                         borderColor: '#2a0062',
                         border: '2px solid #2a0062'   

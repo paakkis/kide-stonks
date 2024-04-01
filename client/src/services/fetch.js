@@ -1,9 +1,7 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react'
 import { getRequestId } from '../utils/getRequestId';
 
-
-const baseUrl = 'https://api.kide.app/api'
+const baseUrl = 'https:/api.kide.app/api'
 
 let token = null
 
@@ -21,10 +19,24 @@ const fetchEvent = async (id) => {
     return response.data
 }
 
+const fetchUser = async (bearer_token) => {
+  try {
+    const response = await axios.get(`${baseUrl}/authentication/user`, {
+      headers: {
+        Authorization: `Bearer ${bearer_token}`
+      }
+    });
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch user information:', error);
+    return null;
+  }
+};
+
+
 const fetchExtraId = async () => {
   try {
-    const response = await axios.get('http://localhost:3003/api/extraid');
-    console.log(response.data.extraId);
+    const response = await axios.get('/api/extraid');
     return response.data.extraId;
   } catch (error) {
     console.error('Failed to fetch extraId:', error);
@@ -33,7 +45,6 @@ const fetchExtraId = async () => {
 };
 
 const fetchTicket = async (id, kideToken, productVariantMaximumReservableQuantity, extraId) => {
-
   var data = {
     "expectCart": true,
     "includeDeliveryMethods": false,
@@ -58,8 +69,7 @@ const fetchTicket = async (id, kideToken, productVariantMaximumReservableQuantit
       }
   }
   const response = await axios.post(`${baseUrl}/reservations`, data, options, {})
-  console.log(response.data)
   return response.data
-}
+};
 
-export default { fetchEvents, fetchEvent, fetchTicket, setToken, fetchExtraId }
+export default { fetchEvents, fetchEvent, fetchTicket, setToken, fetchExtraId, fetchUser }

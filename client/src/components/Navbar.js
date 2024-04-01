@@ -27,7 +27,7 @@ const Navbar = ({setUser, setMessage, setError, user, setOpenMessageNotification
                     component="div"
                     sx={{ flexGrow: 1, color: 'white' }}
                 >
-                    KideStonks
+                    KIDESTONKS
                 </Typography>
                 {user === null ? 
                     null :

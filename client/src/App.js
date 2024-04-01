@@ -39,7 +39,7 @@ const App = () => {
 
     const initializeExtraId = async () => {
       const fetchedExtraId = await fetch.fetchExtraId();
-      setExtraId(fetchedExtraId);
+      setExtraId(fetchedExtraId || 'd4adee2f5a49440e835ced5330470a69');
     };
     initializeExtraId();
   }, []);
@@ -103,7 +103,7 @@ const App = () => {
                         event={event} 
                         setEventInfo={setEventInfo}
               />
-              <TokenInput setToken={setToken}/>
+              <TokenInput token={token} setToken={setToken}/>
               <BuyButton event={eventInfo} 
                         setMessage={setMessage} 
                         setError={setError} 
