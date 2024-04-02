@@ -27,7 +27,6 @@ const App = () => {
   const [openMessageNotification, setOpenMessageNotification] = useState(false)
   const [extraId, setExtraId] = useState('');
 
-  
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedStonkuser');
     if (loggedUserJSON) {

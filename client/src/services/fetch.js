@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getRequestId } from '../utils/getRequestId';
 
-const baseUrl = 'https:/api.kide.app/api'
+const baseUrl = 'https://api.kide.app/api'
 
 let token = null
 

@@ -19,65 +19,58 @@ const BuyButton = ({ event, token, setMessage, setError, setOpenErrorNotificatio
     return () => clearInterval(intervalId);
   }, [isLoopActive]);
 
-  const buyAllTickets = () => {
-
-    if (!token){
-      setOpenErrorNotification(true)
-      setError(`Token puuttuu.`)
-      setTimeout(() => {
-        setError('')
-      }, 6000)
+  const buyAllTickets = async () => {
+    if (!token) {
+      setOpenErrorNotification(true);
+      setError('Token puuttuu.');
+      setTimeout(() => setError(''), 6000);
       return;
     }
+  
     try {
-      if (event.variants.length === 0){
-        fetch.fetchEvent(event.product.id).then(event => {
-          setEventInfo(event.model)
-        }) 
-        setOpenErrorNotification(true)
-        setError(`Myynti ei ole vielä alkanut.`)
-        setTimeout(() => {
-          setError('')
-        }, 6000)
+      if (event.variants.length === 0) {
+        const fetchedEvent = await fetch.fetchEvent(event.product.id); // Ensure this operation is awaited
+        setEventInfo(fetchedEvent.model);
+        setOpenErrorNotification(true);
+        setError('Myynti ei ole vielä alkanut.');
+        setTimeout(() => setError(''), 6000);
         return;
       }
-      event.variants.map(variant => (
-        
+  
+      const fetchPromises = event.variants.map(variant => 
         fetch.fetchTicket(variant.inventoryId, token, variant.productVariantMaximumReservableQuantity, extraId)
-          .then((response) => {
-              setOpenMessageNotification(true)
-              setMessage(`Napattiin '${variant.name}' -lippu.`)
-              setTimeout(() => {
-                setMessage('')
-                setOpenMessageNotification(false)
-              }, 6000)
+          .then(response => {
+            setOpenMessageNotification(true);
+            setMessage(`Napattiin '${variant.name}' -lippu.`);
+            setTimeout(() => {
+              setMessage('');
+              setOpenMessageNotification(false);
+            }, 6000);
           })
           .catch(error => {
-                if (error.response.status === 401){
-                  setOpenErrorNotification(true)
-                  setError(`Token väärin tai puutteellinen. Annathan tokenin ilman Bearer -liitettä.`)
-                  setTimeout(() => {
-                    setError('')
-                  }, 6000)
-                }
-                if (error.response.status === 400){
-                  setOpenErrorNotification(true)
-                  setError(`Lippua '${variant.name}' ei saatavilla.`)
-                  setTimeout(() => {
-                    setError('')
-                    setOpenErrorNotification(false)
-                  }, 6000)
-                  }
-              })
-          ))
-        } catch(error){
-          setOpenErrorNotification(true)
-          setError(`Odottamaton virhe. ${error}`)
-          setTimeout(() => {
-            setError('')
-          }, 6000)
-        }
+            if (error.response && error.response.status === 401) {
+              setError('Token väärin tai puutteellinen. Annathan tokenin ilman Bearer -liitettä.');
+            } else if (error.response && error.response.status === 400) {
+              setError(`Lippua '${variant.name}' ei saatavilla.`);
+            } else {
+              setError(`Odottamaton virhe. ${error.message}`);
+            }
+            setOpenErrorNotification(true);
+            setTimeout(() => {
+              setError('');
+              setOpenErrorNotification(false);
+            }, 6000);
+          })
+      );
+  
+      await Promise.all(fetchPromises);
+  
+    } catch (error) {
+      setOpenErrorNotification(true);
+      setError(`Odottamaton virhe. ${error.message || error}`);
+      setTimeout(() => setError(''), 6000);
     }
+  };
 
 
   const handleLoopClick = () => {
