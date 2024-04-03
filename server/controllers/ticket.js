@@ -2,8 +2,12 @@ const ticketRouter = require('express').Router()
 const axios = require('axios');
 const logger = require('../utils/logger')
 const https = require('https');
+const { getRequestId } = require('../utils/getRequestId');
+
+EXTRA_ID = "d4adee2f5a49440e835ced5330470a69"
 
 ticketRouter.post('/', async (req, res) => {
+
     const baseUrl = 'https://api.kide.app/api';
   
     const data = req.body;
@@ -18,7 +22,7 @@ ticketRouter.post('/', async (req, res) => {
         json: true,
         headers: {
             'Authorization': req.headers.authorization,
-            'X-Requested-Token-C69': 'BwcDU1IE',
+            'X-Requested-Token-C69': getRequestId(data.toCreate[0].inventoryId, EXTRA_ID),
             'X-Requested-With': 'XMLHttpRequest',
         }
     };

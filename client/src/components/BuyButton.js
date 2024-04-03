@@ -15,6 +15,7 @@ const BuyButton = ({
   setEventInfo,
   extraId,
   filterString,
+  useProxy,
 }) => {
   const [isLoopActive, setIsLoopActive] = useState(false);
 
@@ -65,7 +66,8 @@ const BuyButton = ({
             variant.inventoryId,
             token,
             variant.productVariantMaximumReservableQuantity,
-            extraId
+            extraId,
+            useProxy
           )
           .then((response) => {
             setOpenMessageNotification(true);

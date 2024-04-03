@@ -25,6 +25,9 @@ const App = () => {
   const [openErrorNotification, setOpenErrorNotification] = useState(false);
   const [openMessageNotification, setOpenMessageNotification] = useState(false);
   const [extraId, setExtraId] = useState("");
+  const [useProxy, setUseProxy] = useState(false);
+
+
   console.log(filterString);
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedStonkuser");
@@ -116,6 +119,8 @@ const App = () => {
             token={token}
             setToken={setToken}
             setFilterString={setFilterString}
+            useProxy={useProxy}
+            setUseProxy={setUseProxy}
           />
           <BuyButton
             event={eventInfo}
@@ -127,6 +132,7 @@ const App = () => {
             setEventInfo={setEventInfo}
             extraId={extraId}
             filterString={filterString}
+            useProxy={useProxy}
           />
         </Card>
         {eventInfo === null ? <></> : <EventInfo event={eventInfo} />}

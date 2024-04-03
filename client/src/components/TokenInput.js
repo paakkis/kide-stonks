@@ -3,8 +3,10 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import fetch from "../services/fetch";
 import { useState, useEffect } from "react";
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-const TokenInput = ({ token, setToken, setFilterString }) => {
+const TokenInput = ({ token, setToken, setFilterString, useProxy, setUseProxy}) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -30,6 +32,10 @@ const TokenInput = ({ token, setToken, setFilterString }) => {
     setFilterString(event.target.value);
   };
 
+  const handleCheckboxChange = (event) => {
+    setUseProxy(event.target.checked);
+  };
+
   return (
     <Box
       component="form"
@@ -50,7 +56,7 @@ const TokenInput = ({ token, setToken, setFilterString }) => {
       noValidate
       autoComplete="off"
     >
-      <div>
+      <Box sx={{display: 'flex', flexDirection: 'column'}}>
         <TextField
           value={localStorage.getItem("kideToken")}
           id="outlined-helperText"
@@ -132,7 +138,16 @@ const TokenInput = ({ token, setToken, setFilterString }) => {
             },
           }}
         />
-      </div>
+        <FormControlLabel
+          control={<Checkbox checked={useProxy} onChange={handleCheckboxChange} />}
+          label="Use proxy"
+          sx={{
+            "& .MuiFormControlLabel-label": {
+                color: "white",
+            },
+          }}
+        />
+      </Box>
     </Box>
   );
 };

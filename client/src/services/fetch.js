@@ -44,7 +44,7 @@ const fetchExtraId = async () => {
   }
 };
 
-const fetchTicket = async (id, kideToken, productVariantMaximumReservableQuantity, extraId) => {
+const fetchTicket = async (id, kideToken, productVariantMaximumReservableQuantity, extraId, proxy) => {
   var data = {
     "expectCart": true,
     "includeDeliveryMethods": false,
@@ -65,8 +65,13 @@ const fetchTicket = async (id, kideToken, productVariantMaximumReservableQuantit
     headers: {
         'Authorization': `Bearer ${kideToken}`,
         'X-Requested-Token-C69': getRequestId(id, extraId),
-        
+        'X-Requested-With': 'XMLHttpRequest',
+       
       }
+  }
+  if (proxy) {
+    const response = await axios.post(`/api/fetchTicket`, data, options, {})
+    return response.data
   }
   const response = await axios.post(`${baseUrl}/reservations`, data, options, {})
   return response.data

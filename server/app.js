@@ -26,7 +26,7 @@ mongoose.connect(config.MONGODB_URI)
 app.use(cors())
 app.use(express.json())
 
-//app.use('/api/fetchTicket', ticketRouter)
+app.use('/api/fetchTicket', ticketRouter)
 
 app.use(middleware.tokenExtractor)
 app.use(middleware.userExtractor)
